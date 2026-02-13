@@ -1,0 +1,39 @@
+# Node modules
+node_modules/
+
+# Dependencies
+.venv/
+venv/
+env/
+venvvenvScriptsactivate/
+
+# IDE and Editor
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Environment variables
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+out/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Database files
+*.db
+*.sqlite
+
+# Temporary files
+tmp/
+temp/
