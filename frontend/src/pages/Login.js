@@ -1,67 +1,31 @@
-import React, { useState } from "react";
-import API from "../api";
+import React from "react";
+import "../styles/login.css";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+function Login() {
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setError("");
-
-    try {
-      const res = await API.post("auth/login/", {
-        username,
-        password,
-      });
-
-      localStorage.setItem("access", res.data.access);
-      localStorage.setItem("refresh", res.data.refresh);
-
-      // get user role
-      const meRes = await API.get("auth/me/");
-      localStorage.setItem("role", meRes.data.role);
-
-      if (meRes.data.role === "ADMIN") {
-        window.location.href = "/admin";
-      } else if (meRes.data.role === "STAFF") {
-        window.location.href = "/staff";
-      } else {
-        window.location.href = "/student";
-      }
-    } catch (err) {
-      setError("Invalid username or password!");
-    }
+    navigate("/dashboard");
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto" }}>
-      <h2>Aliugo Academy Login</h2>
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Aliugo Academy</h2>
+        <p>Login to continue</p>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        <form onSubmit={handleLogin}>
+          <input type="text" placeholder="Username" required />
+          <input type="password" placeholder="Password" required />
+          <button type="submit">Login</button>
+        </form>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        />
-
-        <button style={{ width: "100%", padding: "10px" }}>
-          Login
-        </button>
-      </form>
+        <small>© {new Date().getFullYear()} Aliugo Academy SMS</small>
+      </div>
     </div>
   );
 }
+
+export default Login;
