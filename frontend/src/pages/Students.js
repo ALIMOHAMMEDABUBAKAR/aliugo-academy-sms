@@ -21,6 +21,7 @@ function Students() {
 
   useEffect(() => {
     fetchStudents();
+    document.title = "Manage Students | Aliugo Academy";
   }, []);
 
   // Delete student
@@ -43,7 +44,7 @@ function Students() {
         <Navbar />
 
         <div className="content">
-          <h2>Students</h2>
+          <h2>Manage Students</h2>
 
           <table className="students-table">
             <thead>

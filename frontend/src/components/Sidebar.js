@@ -12,10 +12,11 @@ function Sidebar() {
           <Link to="/dashboard">🏠 Dashboard</Link>
         </li>
         <li>
-          <Link to="/students">👨‍🎓 Students</Link>
+          <Link to="/students">👨‍🎓 Manage Students
+</Link>
         </li>
         <li>
-          <Link to="/students/add">➕ Add Student</Link>
+          <a href="/register-student">➕ Student Registration</a>
         </li>
         <li>
           <Link to="/">🚪 Logout</Link>

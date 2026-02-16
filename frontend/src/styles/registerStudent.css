@@ -1,0 +1,130 @@
+.register-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f3f5f9;
+  display: flex;
+  justify-content: center;
+  padding: 30px 15px;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 700px;
+  background: white;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0px 5px 18px rgba(0, 0, 0, 0.1);
+}
+
+.register-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.step-indicator {
+  text-align: center;
+  font-size: 14px;
+  color: gray;
+  margin-bottom: 10px;
+}
+
+.admission-preview {
+  text-align: center;
+  padding: 10px;
+  background: #eef3ff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.step-title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-submit {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.review-box {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.review-box hr {
+  margin: 12px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+@media (max-width: 600px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
