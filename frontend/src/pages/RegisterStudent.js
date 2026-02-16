@@ -1,3 +1,4 @@
+import api from "../services/api";
 import React, { useState } from "react";
 import { Container, Card, Button, ProgressBar, Alert } from "react-bootstrap";
 
@@ -11,6 +12,84 @@ import Step6ReviewSubmit from "../components/registrationSteps/Step6ReviewSubmit
 export default function RegisterStudent() {
   const [step, setStep] = useState(1);
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+const handleFinalSubmit = async () => {
+  setErrorMsg("");
+  setSuccessMsg("");
+  setLoading(true);
+
+  try {
+    const data = new FormData();
+
+    // Level + Year
+    data.append("level", formData.level);
+    data.append("year", formData.year);
+
+    // Bio Data
+    data.append("surname", formData.surname);
+    data.append("firstname", formData.firstname);
+    data.append("othername", formData.othername);
+
+    data.append("gender", formData.gender);
+    data.append("dob", formData.dob);
+    data.append("nationality", formData.nationality);
+    data.append("state", formData.state);
+    data.append("lga", formData.lga);
+    data.append("address", formData.address);
+
+    // NIN
+    data.append("nin", formData.nin);
+
+    // Guardian Data (IMPORTANT FIX)
+    data.append("guardian_name", formData.guardianName);
+    data.append("guardian_phone", formData.guardianPhone);
+    data.append("guardian_alt_phone", formData.guardianAltPhone);
+    data.append("guardian_relationship", formData.guardianRelationship);
+    data.append("guardian_occupation", formData.guardianOccupation);
+    data.append("guardian_address", formData.guardianAddress);
+
+    // Academic Data (IMPORTANT FIX)
+    data.append("class_applying", formData.classApplying);
+    data.append("previous_school", formData.previousSchool);
+    data.append("last_class_completed", formData.lastClassCompleted);
+    data.append("department", formData.department);
+
+    // Files (IMPORTANT FIX)
+    if (formData.passportPhoto)
+      data.append("passport_photo", formData.passportPhoto);
+
+    if (formData.birthCertificate)
+      data.append("birth_certificate", formData.birthCertificate);
+
+    if (formData.testimonial)
+      data.append("testimonial", formData.testimonial);
+
+    if (formData.transferCertificate)
+      data.append("transfer_certificate", formData.transferCertificate);
+
+    if (formData.beceResult)
+      data.append("bece_result", formData.beceResult);
+
+    if (formData.immunizationCard)
+      data.append("immunization_card", formData.immunizationCard);
+
+    // Send request
+    const response = await api.post("register/", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    setSuccessMsg("Student Registered Successfully ✅");
+    console.log("Backend Response:", response.data);
+
+  } catch (error) {
+    console.log("Registration Error:", error.response?.data || error.message);
+    setErrorMsg("Registration Failed ❌ Please check backend.");
+  }
+
+  setLoading(false);
+};
+
 
   const [formData, setFormData] = useState({
     level: "",
@@ -162,6 +241,7 @@ if (step === 2) {
 
         <Card.Body>
           {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
+          {successMsg && <Alert variant="success">{successMsg}</Alert>}
 
           {step === 1 && (
             <Step1Level formData={formData} updateField={updateField} />
@@ -201,7 +281,14 @@ if (step === 2) {
               Next
             </Button>
           )}
+
+          {step === 6 && (
+            <Button variant="success" onClick={handleFinalSubmit} disabled={loading}>
+              {loading ? "Submitting..." : "Submit Registration"}
+            </Button>
+          )}
         </Card.Footer>
+
       </Card>
     </Container>
   );

@@ -149,12 +149,6 @@ export default function Step6ReviewSubmit({ formData, admissionNumberPreview }) 
           </tr>
         </tbody>
       </Table>
-
-      <div className="text-center mt-4">
-        <Button variant="success" size="lg" onClick={handleSubmit}>
-          Submit Registration
-        </Button>
-      </div>
     </div>
   );
 }

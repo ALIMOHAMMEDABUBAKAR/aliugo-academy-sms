@@ -17,7 +17,7 @@ def register_student(request):
 
     admission_no = generate_admission_no(level, year)
 
-    student_data = data.copy()
+    student_data = request.data.copy()
     student_data["admission_no"] = admission_no
 
     # NIN validation (SSS only)
