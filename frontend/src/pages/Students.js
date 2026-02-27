@@ -7,15 +7,22 @@ import { useNavigate } from "react-router-dom";
 
 function Students() {
   const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   // Fetch students from backend
   const fetchStudents = async () => {
     try {
+      setLoading(true);
       const res = await API.get("students/");
       setStudents(res.data);
+      setError("");
     } catch (error) {
       console.error("Error fetching students:", error);
+      setError("Failed to load students");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,8 +40,23 @@ function Students() {
       fetchStudents();
     } catch (error) {
       console.error("Error deleting student:", error);
+      setError("Failed to delete student");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="layout">
+        <Sidebar />
+        <div className="main">
+          <Navbar />
+          <div className="content">
+            <p>Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="layout">
@@ -46,6 +68,8 @@ function Students() {
         <div className="content">
           <h2>Manage Students</h2>
 
+          {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
+
           <table className="students-table">
             <thead>
               <tr>
@@ -53,6 +77,7 @@ function Students() {
                 <th>Name</th>
                 <th>Class</th>
                 <th>Gender</th>
+                <th>Admission No</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -65,6 +90,7 @@ function Students() {
                     <td>{student.name}</td>
                     <td>{student.student_class}</td>
                     <td>{student.gender}</td>
+                    <td>{student.admission_no}</td>
                     <td>
                       <button
                         className="btn-edit"
@@ -84,7 +110,7 @@ function Students() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: "center" }}>
+                  <td colSpan="6" style={{ textAlign: "center" }}>
                     No Students Found
                   </td>
                 </tr>

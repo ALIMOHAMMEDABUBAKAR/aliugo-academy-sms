@@ -9,20 +9,29 @@ function EditStudent() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [student_class, setStudentClass] = useState("");
+  const [surname, setSurname] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [othername, setOthername] = useState("");
+  const [class_applying, setClassApplying] = useState("");
   const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   // Fetch existing student details
   useEffect(() => {
     const fetchStudent = async () => {
       try {
         const res = await API.get(`students/${id}/`);
-        setName(res.data.name);
-        setStudentClass(res.data.student_class);
+        setSurname(res.data.surname);
+        setFirstname(res.data.firstname);
+        setOthername(res.data.othername || "");
+        setClassApplying(res.data.class_applying);
         setGender(res.data.gender);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching student:", error);
+        setError("Failed to load student details");
+        setLoading(false);
       }
     };
 
@@ -35,8 +44,10 @@ function EditStudent() {
 
     try {
       await API.put(`students/${id}/`, {
-        name,
-        student_class,
+        surname,
+        firstname,
+        othername,
+        class_applying,
         gender,
       });
 
@@ -44,9 +55,23 @@ function EditStudent() {
       navigate("/students");
     } catch (error) {
       console.error("Error updating student:", error);
-      alert("Failed to update student!");
+      setError("Failed to update student!");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="layout">
+        <Sidebar />
+        <div className="main">
+          <Navbar />
+          <div className="content">
+            <p>Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="layout">
@@ -58,20 +83,37 @@ function EditStudent() {
         <div className="content">
           <h2>Edit Student</h2>
 
+          {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
+
           <form className="student-form" onSubmit={handleUpdate}>
             <input
               type="text"
-              placeholder="Full Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              placeholder="Surname"
+              value={surname}
+              onChange={(e) => setSurname(e.target.value)}
               required
             />
 
             <input
               type="text"
+              placeholder="First Name"
+              value={firstname}
+              onChange={(e) => setFirstname(e.target.value)}
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Other Name"
+              value={othername}
+              onChange={(e) => setOthername(e.target.value)}
+            />
+
+            <input
+              type="text"
               placeholder="Class"
-              value={student_class}
-              onChange={(e) => setStudentClass(e.target.value)}
+              value={class_applying}
+              onChange={(e) => setClassApplying(e.target.value)}
               required
             />
 

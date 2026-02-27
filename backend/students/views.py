@@ -47,3 +47,45 @@ def register_student(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def students_list(request):
+    students = Student.objects.all()
+    serializer = StudentSerializer(students, many=True)
+    return Response(serializer.data)
+
+@api_view(["GET", "PUT", "DELETE"])
+@permission_classes([IsAuthenticated])
+def student_detail(request, pk):
+    try:
+        student = Student.objects.get(pk=pk)
+    except Student.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        serializer = StudentSerializer(student)
+        return Response(serializer.data)
+
+    elif request.method == "PUT":
+        # Allow only admin users for update
+        if not request.user.is_staff:
+            return Response(
+                {"error": "Only admin can update student details"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        serializer = StudentSerializer(student, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        # Allow only admin users for delete
+        if not request.user.is_staff:
+            return Response(
+                {"error": "Only admin can delete students"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        student.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

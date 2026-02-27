@@ -15,32 +15,37 @@ export default function Login() {
     setError("");
 
     try {
+      // Step 1: Authenticate and get tokens
       const res = await axios.post("http://127.0.0.1:8000/api/token/", {
         username,
         password,
       });
 
-      // Save tokens & role
-      localStorage.setItem("access_token", data.access);
-      localStorage.setItem("refresh_token", data.refresh);
-      localStorage.setItem("role", data.role);
+      const { access, refresh } = res.data;
 
+      // Step 2: Save tokens to localStorage
+      localStorage.setItem("access", access);
+      localStorage.setItem("refresh", refresh);
 
-      // Decode JWT to get role (we will do that using backend response later)
-      // For now, we call /api/me/ endpoint after login (we will create it in backend later)
+      // Step 3: Fetch user profile to get role
+      const userRes = await axios.get("http://127.0.0.1:8000/api/me/", {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      });
 
-      // TEMP: assume admin for now
-      // We will replace this later with actual role fetched from backend
-      localStorage.setItem("role", "student");
+      const { role } = userRes.data;
 
-      // Redirect based on role
-      const role = localStorage.getItem("role");
+      // Step 4: Save role to localStorage
+      localStorage.setItem("role", role);
 
-      if (role === "admin") navigate("/admin");
-      else if (role === "staff") navigate("/staff");
+      // Step 5: Redirect based on role
+      if (role === "ADMIN") navigate("/admin");
+      else if (role === "STAFF") navigate("/staff");
       else navigate("/student");
 
     } catch (err) {
+      console.error("Login error:", err);
       setError("Invalid username or password");
     }
   };
