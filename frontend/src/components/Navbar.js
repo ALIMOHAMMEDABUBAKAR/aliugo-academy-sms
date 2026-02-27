@@ -1,13 +1,22 @@
 import React from "react";
-import "../styles/layout.css";
+import { useNavigate } from "react-router-dom";
 
-function Navbar() {
+export default function Navbar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    navigate("/login");
+  };
+
   return (
     <div className="navbar">
-      <h3>Student Management System</h3>
-      <p>Welcome, Admin</p>
+      <h3>Aliugo Academy Dashboard</h3>
+
+      <button onClick={handleLogout} className="logout-btn">
+        Logout
+      </button>
     </div>
   );
 }
-
-export default Navbar;

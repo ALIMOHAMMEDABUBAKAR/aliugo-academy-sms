@@ -102,3 +102,24 @@
 .student-form button:hover {
   background: #1d4ed8;
 }
+
+.logout-btn {
+  padding: 8px 15px;
+  border: none;
+  background: crimson;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  opacity: 0.8;
+}
+
+.nav-link.active {
+  background: #007bff;
+  color: white !important;
+  border-radius: 6px;
+  padding: 8px;
+  display: block;
+}
